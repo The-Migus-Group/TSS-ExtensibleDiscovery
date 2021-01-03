@@ -2,27 +2,24 @@
 <!--
     Thycotic Secret Server Extensible Recovery PowerShell Script Configuration
 -->
-<discover-computers search-base="DC=example,DC=com">
-    <!-- scan all OUs -->
-    <!--<ous/>-->
-    <!-- or scan only these OUs -->
+<discover-computers search-base="DC=mylab,DC=home">
+    <!-- scan all OUs by default or scan only these OUs -->
     <ous>
-        <ou>OU=AADDC Computers</ou>
+        <ou>CN=Computers</ou>
     </ous>
     <!-- exclude->ou (below) applies in either case -->
     <filters>
         <!-- return every object -->
         <!--<filter>*</filter>-->
         <!-- or only return object matches these filters -->
-        <!--<filter scope="Subtree">OperatingSystemServicePack -like 'Samba*'</filter>-->
+        <!--<filter scope="Subtree">(OperatingSystem -like '*Linux*' -or OperatingSystemServicePack -like 'Samba *') -and Enabled -eq 'True'</filter>-->
         <filter scope="Subtree">OperatingSystem -like 'Windows *' -and Enabled -eq 'True'</filter>
     </filters>
-    <!-- no exclusions -->
-    <!-- <exclude/> -->
-    <!-- or exclude computers (by ComputerName) or OUs from the result before returning -->
+    <!-- optionally exclude computers (by ComputerName) or OUs from the result before returning -->
+    <!--
     <exclude>
         <computer name="Adam-PC" />
         <ou>OU=Baz,OU=Bar,OU=Foo</ou>
-    </exclude>
+    </exclude> -->
     <!-- they will be ignored if they don't exist -->
 </discover-computers>

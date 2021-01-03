@@ -11,21 +11,17 @@
     Thycotic Secret Server Extensible Recovery PowerShell Script Configuration
     -->
     <discover-computers search-base="DC=example,DC=com">
-        <!-- scan all OUs -->
-        <!--<ous/>-->
-        <!-- or scan only these OUs -->
+        <!-- scan all OUs by default or scan only these OUs -->
         <ous>
-            <ou>OU=Computers</ou>
+            <ou>CN=Computers</ou>
         </ous>
         <filters>
             <!-- return every object -->
             <!--<filter>*</filter>-->
             <!-- or only return object matches these filters -->
-            <filter>OperatingSystem -like 'Windows *'</filter>
+            <filter>OperatingSystem -like 'Windows *' -and Enabled -eq 'True'</filter>
         </filters>
-        <!-- no exclusions -->
-        <!-- <exclude/> -->
-        <!-- or exclude computers (by ComputerName) or OUs from the result before returning -->
+        <!-- optionally exclude computers (by ComputerName) or OUs from the result before returning -->
         <exclude>
             <computer name="Adam-PC" />
             <ou>OU=Baz,OU=Bar,OU=Foo</ou>
