@@ -15,7 +15,7 @@
         <!--<filter>*</filter>-->
         <!-- or only return object matches these filters -->
         <!--<filter scope="Subtree">OperatingSystemServicePack -like 'Samba*'</filter>-->
-        <filter scope="Subtree">OperatingSystem -like 'Windows *' -and Enabled -eq $true</filter>
+        <filter scope="Subtree">OperatingSystem -like 'Windows *' -and Enabled -eq 'True'</filter>
     </filters>
     <!-- no exclusions -->
     <!-- <exclude/> -->
