@@ -39,17 +39,17 @@ Copyright 2020, The Migus Group, LLC. All rights reserved
 
 $ErrorActionPreference = 'Stop';
 
-[XML]$xml = Get-Content -Path "${XmlFilePath}";
+[XML]$xml = Get-Content -Path $XmlFilePath;
 
 $SearchBase = $xml.'discover-computers'.'search-base';
 
-$xml.'discover-computers'.filters.filter | ForEach-Object {
+ForEach ($filter in $xml.'discover-computers'.filters.filter) {
     $GetADComputerParameters = @{
         SearchBase  = $SearchBase;
-        Filter      = $_.'#text';
-        SearchScope = $_.scope;
+        Filter      = $filter.'#text';
+        SearchScope = $filter.scope;
         Credential  = [pscredential]::New(
-            "${Domain}\${Username}", (ConvertTo-SecureString "${Password}" -AsPlainText -Force)
+            "${Domain}\${Username}", (ConvertTo-SecureString $Password -AsPlainText -Force)
         );
         Properties  = @('DistinguishedName', 'DNSHostName', 'Name', 'ObjectGuid', 'OperatingSystem');
     };
