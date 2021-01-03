@@ -17,11 +17,17 @@ $ADParameters = @{
     Filter      = '*';
     SearchScope = 'Subtree';
     Credential  = New-Object System.Management.Automation.PSCredential (
-        "${Domain}\${Username}", (ConvertTo-SecureString "${Password}" -AsPlainText -Force)
+        "${Domain}\${Username}", (ConvertTo-SecureString $Password -AsPlainText -Force)
     );
 };
 
-Get-ADOrganizationalUnit @ADParameters | Select-Object Name, ObjectGUID, @{
+&{
+    Get-ADOrganizationalUnit @ADParameters;
+
+    if ($SearchBase.StartsWith('DC=')) {
+        Get-ADObject -LDAPFilter '(&(ObjectClass=container)(|(Name=Computers)(Name=Users)))'
+    }
+} | Select-Object Name, ObjectGUID, @{
     Name       = 'DistinguishedName';
     Expression = {
         $_.DistinguishedName -Replace (',DC=.*', '')
